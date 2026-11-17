@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_import_log_list" model="ir.ui.view">
+        <field name="name">gumijus.import.log.list</field>
+        <field name="model">gumijus.import.log</field>
+        <field name="arch" type="xml">
+            <tree string="Impor Berkas Data">
+                <field name="name"/>
+                <field name="jenis_berkas"/>
+                <field name="file_name"/>
+                <field name="tanggal_impor"/>
+                <field name="jumlah_baris"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'valid'"
+                       decoration-danger="status == 'ditolak'"
+                       decoration-warning="status == 'baru'"/>
+                <field name="pesan_galat"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_import_log_form" model="ir.ui.view">
+        <field name="name">gumijus.import.log.form</field>
+        <field name="model">gumijus.import.log</field>
+        <field name="arch" type="xml">
+            <form string="Impor Berkas Data">
+                <header>
+                    <button name="action_validasi" type="object" string="Validasi Berkas"
+                            class="btn-primary"/>
+                    <button name="action_impor" type="object" string="Impor ke Dataset"/>
+                    <field name="status" widget="statusbar" statusbar_visible="baru,valid,ditolak"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Nama proses impor"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="jenis_berkas"/>
+                            <field name="id_cabang" options="{'no_create': True}"/>
+                            <field name="file_name"/>
+                            <field name="file_data" filename="file_name"/>
+                        </group>
+                        <group>
+                            <field name="tanggal_impor"/>
+                            <field name="jumlah_baris"/>
+                        </group>
+                    </group>
+                    <group string="Hasil Validasi Berkas">
+                        <field name="pesan_galat" nolabel="1" readonly="1"
+                               placeholder="Belum ada pesan galat."
+                               invisible="not pesan_galat"/>
+                    </group>
+                    <div class="alert alert-info" role="alert" invisible="pesan_galat">
+                        Berkas lolos validasi. Kolom wajib lengkap dan tidak ada nilai negatif.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_import_log" model="ir.actions.act_window">
+        <field name="name">Impor Berkas Data</field>
+        <field name="res_model">gumijus.import.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Belum ada berkas yang diimpor</p>
+            <p>Unggah berkas penjualan, stok/BoM, atau cuaca untuk divalidasi.</p>
+        </field>
+    </record>
+
+    <record id="view_dataset_list" model="ir.ui.view">
+        <field name="name">gumijus.dataset.list</field>
+        <field name="model">gumijus.dataset</field>
+        <field name="arch" type="xml">
+            <tree string="Pratinjau Dataset Terstruktur" create="false" edit="false">
+                <field name="tanggal"/>
+                <field name="id_cabang"/>
+                <field name="id_bahan"/>
+                <field name="est_porsi_terjual" string="Porsi Terjual" sum="Total Porsi Terjual"/>
+                <field name="suhu"/>
+                <field name="curah_hujan" string="Hujan (mm)"/>
+                <field name="sumber" string="Sumber"/>
+                <field name="status_validasi" widget="badge"
+                       decoration-success="status_validasi == 'valid'"
+                       decoration-danger="status_validasi == 'ditolak'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_dataset_form" model="ir.ui.view">
+        <field name="name">gumijus.dataset.form</field>
+        <field name="model">gumijus.dataset</field>
+        <field name="arch" type="xml">
+            <form string="Baris Dataset">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="tanggal"/>
+                            <field name="id_cabang"/>
+                            <field name="id_bahan"/>
+                        </group>
+                        <group>
+                            <field name="est_porsi_terjual"/>
+                            <field name="suhu"/>
+                            <field name="curah_hujan"/>
+                            <field name="sumber"/>
+                            <field name="status_validasi"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dataset" model="ir.actions.act_window">
+        <field name="name">Pratinjau Dataset Terstruktur</field>
+        <field name="res_model">gumijus.dataset</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

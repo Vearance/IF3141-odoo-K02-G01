@@ -26,9 +26,9 @@ Buka http://localhost:8069. Pada start pertama Odoo membuat database `odoo_app` 
 | Berhenti (data tetap) | `docker compose down` |
 | Berhenti dan **MENGHAPUS data** | `docker compose down -v` |
 | Setelah mengubah Python | `docker compose restart web` |
-| Install modul | `docker compose run --rm web odoo -d odoo_app -i starter_cats --stop-after-init` |
-| Upgrade modul | `docker compose run --rm web odoo -d odoo_app -u starter_cats --stop-after-init` |
-| Test modul | `docker compose run --rm web odoo -d odoo_test -i starter_cats --test-enable --test-tags /starter_cats --stop-after-init --without-demo=all` |
+| Install modul | `docker compose run --rm web odoo -d odoo_app -i gumijus_prediction --stop-after-init` |
+| Upgrade modul | `docker compose run --rm web odoo -d odoo_app -u gumijus_prediction --stop-after-init` |
+| Test modul | `docker compose run --rm web odoo -d odoo_test -i gumijus_prediction --test-enable --test-tags /gumijus_prediction --stop-after-init --without-demo=all` |
 | Backup database | `./scripts/export_db.sh` (Windows: `scripts\export_db.cmd`) |
 | Restore database | `./scripts/import_db.sh` (Windows: `scripts\import_db.cmd`) |
 
@@ -57,9 +57,27 @@ Catatan:
 | `DATA.md` | Pemetaan data pribadi untuk sistem Anda |
 | `.env.example` | Contoh variabel lingkungan; salin ke `.env` |
 
+## Modul Gumijus: `gumijus_prediction`
+
+Modul utama Sistem Pengelolaan Persediaan dan Prediksi Kebutuhan Bahan Baku Gumijus berada di `custom_addons/gumijus_prediction`. Modul ini mencakup master bahan baku dan BoM, stok harian dan rekap per cabang, impor dataset penjualan/cuaca, prediksi dan rekomendasi pengadaan, dashboard, evaluasi akurasi, serta pelatihan ulang model.
+
+Pasang modul:
+
+```bash
+docker compose run --rm web odoo -d odoo_app -i gumijus_prediction --stop-after-init
+```
+
+Data demo untuk screenshot dapat dimuat melalui script Odoo shell:
+
+```bash
+docker compose run --rm -T web odoo shell -d odoo_app < scripts/seed_demo_data.py
+```
+
+Script tersebut membuat data contoh dan mengatur password user demo; gunakan hanya pada database development.
+
 ## Modul starter: `starter_cats`
 
-Contoh modul (domain kucing) berisi model dengan chatter, state machine dengan guard, constraint, group + ACL + record rule, view `<tree>`/form/search, data awal (`noupdate`), data demo, dan test. Pasang dengan perintah **Install modul** di atas; bila modul belum muncul di **Apps**, pilih **Update Apps List**.
+Contoh modul (domain kucing) berisi model dengan chatter, state machine dengan guard, constraint, group + ACL + record rule, view `<tree>`/form/search, data awal (`noupdate`), data demo, dan test. Modul ini hanya contoh; untuk tugas besar, gunakan `gumijus_prediction`. Bila modul belum muncul di **Apps**, pilih **Update Apps List**.
 
 ## IDE dan lint
 

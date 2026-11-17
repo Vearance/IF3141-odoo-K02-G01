@@ -1,0 +1,205 @@
+.gumijus-dashboard {
+    background: #f4f6f8;
+    min-height: 100%;
+    padding: 20px 24px 40px;
+    color: #263238;
+
+    .gjs-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+    }
+    .gjs-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0 0 4px;
+        color: #1b5e20;
+    }
+    .gjs-subtitle {
+        margin: 0;
+        color: #607d8b;
+        font-size: 13px;
+    }
+    .gjs-filters {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .gjs-filter {
+        min-width: 150px;
+        label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            color: #78909c;
+            margin-bottom: 3px;
+        }
+    }
+    .gjs-loading {
+        padding: 60px;
+        text-align: center;
+        color: #607d8b;
+        background: #fff;
+        border-radius: 10px;
+    }
+    .gjs-kpis {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 16px;
+    }
+    .gjs-kpi {
+        background: #fff;
+        border-radius: 10px;
+        padding: 14px 18px;
+        box-shadow: 0 1px 4px rgba(38, 50, 56, .08);
+        border-left: 4px solid #2e7d32;
+    }
+    .gjs-kpi-label {
+        font-size: 12px;
+        color: #78909c;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+    }
+    .gjs-kpi-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1b5e20;
+        margin: 2px 0;
+        line-height: 1.2;
+    }
+    .gjs-kpi-note {
+        font-size: 11px;
+        color: #90a4ae;
+    }
+    .gjs-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 14px;
+        margin-bottom: 16px;
+    }
+    .gjs-card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 16px 18px;
+        box-shadow: 0 1px 4px rgba(38, 50, 56, .08);
+        margin-bottom: 16px;
+    }
+    .gjs-grid .gjs-card {
+        margin-bottom: 0;
+    }
+    .gjs-card-wide {
+        grid-column: span 1;
+    }
+    .gjs-card-narrow {
+        grid-column: span 1;
+    }
+    .gjs-card-half {
+        grid-column: span 1;
+    }
+    .gjs-card-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #37474f;
+        margin: 0 0 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #eceff1;
+    }
+    .gjs-chart {
+        width: 100%;
+        height: 210px;
+    }
+    .gjs-axis {
+        font-size: 11px;
+        fill: #78909c;
+    }
+    .gjs-legend {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+        font-size: 12px;
+        color: #546e7a;
+    }
+    .gjs-legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .gjs-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    .gjs-weather {
+        border: 1px solid #eceff1;
+        border-radius: 8px;
+        padding: 9px 11px;
+        margin-bottom: 9px;
+        background: #fafafa;
+    }
+    .gjs-weather-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    .gjs-weather-city {
+        font-weight: 600;
+        font-size: 13px;
+        color: #37474f;
+    }
+    .gjs-weather-detail {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        font-size: 12px;
+        color: #546e7a;
+    }
+    .gjs-table {
+        font-size: 12px;
+        margin-bottom: 0;
+        th {
+            color: #78909c;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .02em;
+            border-bottom: 1px solid #cfd8dc;
+        }
+        td {
+            vertical-align: middle;
+        }
+    }
+    .gjs-model-status {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    .gjs-model-note {
+        margin: 0;
+        color: #546e7a;
+        font-size: 13px;
+    }
+    .gjs-model-version {
+        margin: 0;
+        color: #37474f;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .gumijus-dashboard {
+        .gjs-kpis {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .gjs-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+}

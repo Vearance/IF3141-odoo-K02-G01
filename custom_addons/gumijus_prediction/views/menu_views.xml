@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_bahan_baku" name="Bahan Baku"
+              parent="stock.menu_stock_inventory_control"
+              action="action_bahan_baku" sequence="5"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_gumijus_root" name="Gumijus" sequence="60"/>
+
+    <menuitem id="menu_gumijus_operasional" name="Operasional"
+              parent="menu_gumijus_root" sequence="10"/>
+    <menuitem id="menu_stok_harian" name="Pemakaian dan Stok Harian"
+              parent="menu_gumijus_operasional" action="action_stok_harian" sequence="10"
+              groups="group_gumijus_staf,group_gumijus_pjo"/>
+    <menuitem id="menu_rekap_stok" name="Rekapitulasi Stok per Cabang"
+              parent="menu_gumijus_operasional" action="action_rekap_stok" sequence="20"
+              groups="group_gumijus_staf,group_gumijus_pjo"/>
+
+    <menuitem id="menu_gumijus_data" name="Data dan Prediksi"
+              parent="menu_gumijus_root" sequence="20"/>
+    <menuitem id="menu_import_log" name="Impor Berkas Data"
+              parent="menu_gumijus_data" action="action_import_log" sequence="10"
+              groups="group_gumijus_pjo,group_gumijus_pengembang"/>
+    <menuitem id="menu_dataset" name="Pratinjau Dataset"
+              parent="menu_gumijus_data" action="action_dataset" sequence="20"
+              groups="group_gumijus_pjo,group_gumijus_pengembang"/>
+    <menuitem id="menu_prediksi" name="Jalankan Prediksi"
+              parent="menu_gumijus_data" action="action_prediksi" sequence="30"
+              groups="group_gumijus_pjo"/>
+    <menuitem id="menu_rekomendasi" name="Rekomendasi Pengadaan"
+              parent="menu_gumijus_data" action="action_rekomendasi" sequence="40"
+              groups="group_gumijus_pjo,group_gumijus_cofounder"/>
+
+    <menuitem id="menu_gumijus_monitoring" name="Monitoring Model"
+              parent="menu_gumijus_root" sequence="30"/>
+    <menuitem id="menu_dashboard" name="Dashboard Estimasi Kebutuhan"
+              parent="menu_gumijus_monitoring" action="action_dashboard" sequence="10"
+              groups="group_gumijus_pjo,group_gumijus_cofounder"/>
+    <menuitem id="menu_evaluasi" name="Evaluasi Akurasi"
+              parent="menu_gumijus_monitoring" action="action_evaluasi" sequence="20"
+              groups="group_gumijus_pjo,group_gumijus_cofounder,group_gumijus_pengembang"/>
+    <menuitem id="menu_pelatihan" name="Pelatihan Ulang Model"
+              parent="menu_gumijus_monitoring" action="action_pelatihan" sequence="30"
+              groups="group_gumijus_pengembang"/>
+</odoo>

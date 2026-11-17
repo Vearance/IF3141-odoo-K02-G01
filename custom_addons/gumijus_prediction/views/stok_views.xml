@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bahan_baku_list" model="ir.ui.view">
+        <field name="name">product.template.list.bahan.baku</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <tree string="Daftar Bahan Baku" create="false" edit="false">
+                <field name="default_code" string="Kode"/>
+                <field name="name" string="Nama Bahan Baku"/>
+                <field name="standard_price" string="Harga Pokok" sum="Total Harga Pokok"/>
+                <field name="qty_available" string="Stok" sum="Total Stok"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_product_template_form_gumijus" model="ir.ui.view">
+        <field name="name">product.template.form.gumijus</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='categ_id']" position="after">
+                <field name="masa_simpan_hari"/>
+                <field name="catatan_penyimpanan"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_bahan_baku" model="ir.actions.act_window">
+        <field name="name">Bahan Baku</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_bahan_baku_list"/>
+        <field name="domain">[('categ_id.name', '=', 'Bahan Baku')]</field>
+        <field name="context">{'default_detailed_type': 'product'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Belum ada bahan baku</p>
+            <p>Tambahkan bahan baku beserta satuan, harga pokok, dan masa simpan.</p>
+        </field>
+    </record>
+
+    <record id="view_stok_harian_list" model="ir.ui.view">
+        <field name="name">gumijus.stok.harian.list</field>
+        <field name="model">gumijus.stok.harian</field>
+        <field name="arch" type="xml">
+            <tree string="Pemakaian dan Stok Harian">
+                <field name="tanggal"/>
+                <field name="id_cabang"/>
+                <field name="id_bahan"/>
+                <field name="saldo_awal" sum="Total Saldo Awal"/>
+                <field name="jml_masuk" sum="Total Masuk"/>
+                <field name="jml_pakai" sum="Total Pakai"/>
+                <field name="sisa_stok" sum="Total Sisa Stok"/>
+                <field name="satuan"/>
+                <field name="status_closing" widget="badge"
+                       decoration-success="status_closing == 'closing'"
+                       decoration-warning="status_closing == 'draft'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_stok_harian_form" model="ir.ui.view">
+        <field name="name">gumijus.stok.harian.form</field>
+        <field name="model">gumijus.stok.harian</field>
+        <field name="arch" type="xml">
+            <form string="Pemakaian dan Stok Harian">
+                <header>
+                    <button name="action_closing" type="object" string="Tandai Closing"
+                            class="btn-primary" invisible="status_closing == 'closing'"/>
+                    <field name="status_closing" widget="statusbar" statusbar_visible="draft,closing"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" class="text-break"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="tanggal"/>
+                            <field name="id_cabang" options="{'no_create': True}"/>
+                            <field name="id_bahan" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="saldo_awal"/>
+                            <field name="jml_masuk"/>
+                            <field name="jml_pakai"/>
+                            <field name="sisa_stok"/>
+                            <field name="satuan"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="catatan"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_rekap_stok_list" model="ir.ui.view">
+        <field name="name">gumijus.rekap.stok.list</field>
+        <field name="model">gumijus.rekap.stok</field>
+        <field name="arch" type="xml">
+            <tree string="Rekapitulasi Stok per Cabang" create="false" edit="false" delete="false">
+                <header>
+                    <button name="action_export" type="object"
+                            string="Ekspor Rekapitulasi (CSV)" class="btn-primary"/>
+                </header>
+                <field name="id_cabang" string="Cabang"/>
+                <field name="id_bahan" string="Bahan Baku"/>
+                <field name="jml_masuk" sum="Total Masuk"/>
+                <field name="jml_pakai" sum="Total Pakai"/>
+                <field name="sisa_stok" sum="Total Sisa Stok"/>
+                <field name="satuan"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_stok_harian" model="ir.actions.act_window">
+        <field name="name">Pemakaian dan Stok Harian</field>
+        <field name="res_model">gumijus.stok.harian</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Belum ada catatan stok harian</p>
+            <p>Catat penerimaan, pemakaian, dan sisa stok closing per cabang.</p>
+        </field>
+    </record>
+
+    <record id="action_rekap_stok" model="ir.actions.act_window">
+        <field name="name">Rekapitulasi Stok per Cabang</field>
+        <field name="res_model">gumijus.rekap.stok</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

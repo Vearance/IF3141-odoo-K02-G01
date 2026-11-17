@@ -1,0 +1,30 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stok_harian_staf,stok.harian staf,model_gumijus_stok_harian,group_gumijus_staf,1,1,1,0
+access_stok_harian_pjo,stok.harian pjo,model_gumijus_stok_harian,group_gumijus_pjo,1,1,1,1
+access_stok_harian_cofounder,stok.harian cofounder,model_gumijus_stok_harian,group_gumijus_cofounder,1,0,0,0
+access_stok_harian_pengembang,stok.harian pengembang,model_gumijus_stok_harian,group_gumijus_pengembang,1,0,0,0
+access_rekap_staf,rekap staf,model_gumijus_rekap_stok,group_gumijus_staf,1,0,0,0
+access_rekap_pjo,rekap pjo,model_gumijus_rekap_stok,group_gumijus_pjo,1,0,0,0
+access_rekap_cofounder,rekap cofounder,model_gumijus_rekap_stok,group_gumijus_cofounder,1,0,0,0
+access_rekap_pengembang,rekap pengembang,model_gumijus_rekap_stok,group_gumijus_pengembang,1,0,0,0
+access_import_pjo,import pjo,model_gumijus_import_log,group_gumijus_pjo,1,1,1,1
+access_import_pengembang,import pengembang,model_gumijus_import_log,group_gumijus_pengembang,1,1,1,1
+access_import_cofounder,import cofounder,model_gumijus_import_log,group_gumijus_cofounder,1,0,0,0
+access_dataset_pjo,dataset pjo,model_gumijus_dataset,group_gumijus_pjo,1,0,0,0
+access_dataset_pengembang,dataset pengembang,model_gumijus_dataset,group_gumijus_pengembang,1,1,1,1
+access_dataset_cofounder,dataset cofounder,model_gumijus_dataset,group_gumijus_cofounder,1,0,0,0
+access_prediksi_pjo,prediksi pjo,model_gumijus_prediksi,group_gumijus_pjo,1,1,1,1
+access_prediksi_pengembang,prediksi pengembang,model_gumijus_prediksi,group_gumijus_pengembang,1,0,0,0
+access_prediksi_cofounder,prediksi cofounder,model_gumijus_prediksi,group_gumijus_cofounder,1,0,0,0
+access_rekomendasi_pjo,rekomendasi pjo,model_gumijus_rekomendasi,group_gumijus_pjo,1,1,1,1
+access_rekomendasi_cofounder,rekomendasi cofounder,model_gumijus_rekomendasi,group_gumijus_cofounder,1,0,0,0
+access_rekomendasi_pengembang,rekomendasi pengembang,model_gumijus_rekomendasi,group_gumijus_pengembang,1,0,0,0
+access_evaluasi_pjo,evaluasi pjo,model_gumijus_evaluasi,group_gumijus_pjo,1,0,0,0
+access_evaluasi_cofounder,evaluasi cofounder,model_gumijus_evaluasi,group_gumijus_cofounder,1,0,0,0
+access_evaluasi_pengembang,evaluasi pengembang,model_gumijus_evaluasi,group_gumijus_pengembang,1,1,1,1
+access_pelatihan_pengembang,pelatihan pengembang,model_gumijus_pelatihan,group_gumijus_pengembang,1,1,1,1
+access_pelatihan_pjo,pelatihan pjo,model_gumijus_pelatihan,group_gumijus_pjo,1,0,0,0
+access_pelatihan_line_pengembang,pelatihan line pengembang,model_gumijus_pelatihan_line,group_gumijus_pengembang,1,1,1,1
+access_pelatihan_line_pjo,pelatihan line pjo,model_gumijus_pelatihan_line,group_gumijus_pjo,1,0,0,0
+access_pelatihan_cofounder,pelatihan cofounder,model_gumijus_pelatihan,group_gumijus_cofounder,1,0,0,0
+access_pelatihan_line_cofounder,pelatihan line cofounder,model_gumijus_pelatihan_line,group_gumijus_cofounder,1,0,0,0

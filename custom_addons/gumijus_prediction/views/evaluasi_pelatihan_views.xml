@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_evaluasi_list" model="ir.ui.view">
+        <field name="name">gumijus.evaluasi.list</field>
+        <field name="model">gumijus.evaluasi</field>
+        <field name="arch" type="xml">
+            <tree string="Laporan Evaluasi Akurasi" create="false" edit="false"
+                  decoration-danger="perlu_retrain" decoration-success="not perlu_retrain">
+                <field name="periode_mulai" string="Mulai"/>
+                <field name="periode_selesai" string="Selesai"/>
+                <field name="id_cabang"/>
+                <field name="total_aktual" sum="Total Aktual"/>
+                <field name="total_prediksi" sum="Total Prediksi"/>
+                <field name="variance" string="Variance" sum="Total Variance"/>
+                <field name="nilai_wape" string="WAPE (%)"/>
+                <field name="ambang_batas" string="Batas (%)"/>
+                <field name="status_model" widget="badge"
+                       decoration-danger="status_model == 'retrain'"
+                       decoration-success="status_model == 'ok'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_evaluasi_graph" model="ir.ui.view">
+        <field name="name">gumijus.evaluasi.graph</field>
+        <field name="model">gumijus.evaluasi</field>
+        <field name="arch" type="xml">
+            <graph string="Deviasi Prediksi dan WAPE per Cabang" type="bar">
+                <field name="id_cabang"/>
+                <field name="variance" type="measure"/>
+                <field name="nilai_wape" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_evaluasi_form" model="ir.ui.view">
+        <field name="name">gumijus.evaluasi.form</field>
+        <field name="model">gumijus.evaluasi</field>
+        <field name="arch" type="xml">
+            <form string="Evaluasi Akurasi" create="false" edit="false">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="periode_mulai"/>
+                            <field name="periode_selesai"/>
+                            <field name="id_cabang"/>
+                        </group>
+                        <group>
+                            <field name="total_aktual"/>
+                            <field name="total_prediksi"/>
+                            <field name="variance"/>
+                            <field name="nilai_wape"/>
+                            <field name="ambang_batas"/>
+                            <field name="status_model"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="catatan"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_evaluasi" model="ir.actions.act_window">
+        <field name="name">Evaluasi Akurasi Model</field>
+        <field name="res_model">gumijus.evaluasi</field>
+        <field name="view_mode">list,graph,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Belum ada evaluasi akurasi</p>
+            <p>Bandingkan hasil prediksi dengan stok aktual dan periksa WAPE per cabang.</p>
+        </field>
+    </record>
+
+    <record id="view_pelatihan_list" model="ir.ui.view">
+        <field name="name">gumijus.pelatihan.list</field>
+        <field name="model">gumijus.pelatihan</field>
+        <field name="arch" type="xml">
+            <tree string="Pelatihan Ulang Model">
+                <field name="name"/>
+                <field name="tanggal"/>
+                <field name="periode_data"/>
+                <field name="versi_model"/>
+                <field name="split_train"/>
+                <field name="split_test"/>
+                <field name="total_data"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'selesai'"
+                       decoration-info="status == 'draft'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_pelatihan_form" model="ir.ui.view">
+        <field name="name">gumijus.pelatihan.form</field>
+        <field name="model">gumijus.pelatihan</field>
+        <field name="arch" type="xml">
+            <form string="Pelatihan Ulang Model">
+                <header>
+                    <button name="action_latih" type="object" string="Latih Ulang Model"
+                            class="btn-primary"/>
+                    <button name="action_simpan_versi" type="object"
+                            string="Simpan Versi Model"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,selesai"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Nama pelatihan"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="tanggal"/>
+                            <field name="periode_data"/>
+                            <field name="versi_model"/>
+                        </group>
+                        <group>
+                            <field name="split_train"/>
+                            <field name="split_test"/>
+                            <field name="total_data"/>
+                        </group>
+                    </group>
+                    <group string="WAPE per Cabang pada Data Uji (20%)">
+                        <field name="line_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="id_cabang"/>
+                                <field name="nilai_wape" string="WAPE (%)"/>
+                                <field name="ambang_batas" string="Batas (%)"/>
+                                <field name="status" widget="badge"
+                                       decoration-danger="status == 'retrain'"
+                                       decoration-success="status == 'ok'"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <div class="alert alert-info" role="alert">
+                        Data dipisah secara kronologis: 80% data latih dan 20% data uji.
+                        Status perlu pelatihan ulang diberikan jika WAPE melebihi ambang 25%.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_pelatihan" model="ir.actions.act_window">
+        <field name="name">Pelatihan Ulang Model</field>
+        <field name="res_model">gumijus.pelatihan</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Belum ada riwayat pelatihan</p>
+            <p>Muat dataset terbaru, lakukan split 80/20, dan simpan versi model.</p>
+        </field>
+    </record>
+</odoo>

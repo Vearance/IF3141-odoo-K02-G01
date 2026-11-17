@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="gumijus_prediction.Dashboard">
+        <div class="gumijus-dashboard">
+            <div class="gjs-header">
+                <div>
+                    <h2 class="gjs-title">Dashboard Estimasi Kebutuhan dan Status Pasokan</h2>
+                    <p class="gjs-subtitle">Pantau tren kebutuhan, kondisi cuaca, stok bahan baku, dan status model prediksi.</p>
+                </div>
+                <div class="gjs-filters">
+                    <div class="gjs-filter">
+                        <label>Cabang</label>
+                        <select name="cabang" class="form-select form-select-sm" t-on-change="onFilterChange">
+                            <option value="0">Semua Cabang</option>
+                            <t t-foreach="state.data.cabang_options" t-as="cabang" t-key="cabang.id">
+                                <option t-att-value="cabang.id" t-att-selected="state.filters.cabang == cabang.id">
+                                    <t t-esc="cabang.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="gjs-filter">
+                        <label>Periode</label>
+                        <select name="periode" class="form-select form-select-sm" t-on-change="onFilterChange">
+                            <t t-foreach="state.data.periode_options" t-as="periode" t-key="periode.value">
+                                <option t-att-value="periode.value" t-att-selected="state.filters.periode == periode.value">
+                                    <t t-esc="periode.label"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="gjs-filter">
+                        <label>Bahan Baku</label>
+                        <select name="bahan" class="form-select form-select-sm" t-on-change="onFilterChange">
+                            <option value="0">Semua Bahan</option>
+                            <t t-foreach="state.data.bahan_options" t-as="bahan" t-key="bahan.id">
+                                <option t-att-value="bahan.id" t-att-selected="state.filters.bahan == bahan.id">
+                                    <t t-esc="bahan.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <t t-if="state.loading">
+                <div class="gjs-loading">Memuat data dashboard...</div>
+            </t>
+            <t t-else="">
+                <div class="gjs-kpis">
+                    <div class="gjs-kpi">
+                        <div class="gjs-kpi-label">Estimasi Kebutuhan</div>
+                        <div class="gjs-kpi-value"><t t-esc="formatNumber(total('estimasi'))"/></div>
+                        <div class="gjs-kpi-note">akumulasi periode terpilih</div>
+                    </div>
+                    <div class="gjs-kpi">
+                        <div class="gjs-kpi-label">Rekomendasi Pengadaan</div>
+                        <div class="gjs-kpi-value"><t t-esc="formatNumber(total('rekomendasi'))"/></div>
+                        <div class="gjs-kpi-note">tidak pernah bernilai negatif</div>
+                    </div>
+                    <div class="gjs-kpi">
+                        <div class="gjs-kpi-label">Status Model</div>
+                        <div class="gjs-kpi-value">
+                            <span t-att-class="'badge ' + (state.data.model_status === 'OK' ? 'text-bg-success' : 'text-bg-danger')">
+                                <t t-esc="state.data.model_status"/>
+                            </span>
+                        </div>
+                        <div class="gjs-kpi-note">versi <t t-esc="state.data.model_version"/></div>
+                    </div>
+                    <div class="gjs-kpi">
+                        <div class="gjs-kpi-label">Cabang Termonitor</div>
+                        <div class="gjs-kpi-value"><t t-esc="state.data.weather.length"/></div>
+                        <div class="gjs-kpi-note">indikator cuaca aktif</div>
+                    </div>
+                </div>
+
+                <div class="gjs-grid">
+                    <div class="gjs-card gjs-card-wide">
+                        <h4 class="gjs-card-title">Tren Estimasi Kebutuhan per Cabang</h4>
+                        <svg viewBox="0 0 600 220" class="gjs-chart">
+                            <line x1="46" y1="190" x2="590" y2="190" stroke="#cfd8dc" stroke-width="1"/>
+                            <line x1="46" y1="18" x2="46" y2="190" stroke="#cfd8dc" stroke-width="1"/>
+                            <t t-foreach="state.data.trend_labels" t-as="label" t-key="label_index">
+                                <text t-att-x="46 + (544 * label_index / (state.data.trend_labels.length - 1))"
+                                      y="210" text-anchor="middle" class="gjs-axis" t-esc="label"/>
+                            </t>
+                            <t t-foreach="state.data.trend_series" t-as="series" t-key="series.cabang">
+                                <polyline t-att-points="chartPoints(series)" t-att-stroke="series.color"
+                                          fill="none" stroke-width="3" stroke-linejoin="round"/>
+                                <t t-foreach="chartDots(series)" t-as="dot" t-key="dot_index">
+                                    <circle t-att-cx="dot.x" t-att-cy="dot.y" r="4" t-att-fill="series.color"/>
+                                </t>
+                            </t>
+                        </svg>
+                        <div class="gjs-legend">
+                            <t t-foreach="state.data.trend_series" t-as="series" t-key="series.cabang">
+                                <span class="gjs-legend-item">
+                                    <span class="gjs-dot" t-att-style="'background:' + series.color"/>
+                                    <t t-esc="series.cabang"/>
+                                </span>
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="gjs-card gjs-card-narrow">
+                        <h4 class="gjs-card-title">Indikator Cuaca</h4>
+                        <t t-foreach="state.data.weather" t-as="cuaca" t-key="cuaca.cabang">
+                            <div class="gjs-weather">
+                                <div class="gjs-weather-head">
+                                    <span class="gjs-weather-city"><t t-esc="cuaca.cabang"/></span>
+                                    <span t-att-class="'badge ' + (cuaca.kondisi === 'Hujan' ? 'text-bg-primary' : (cuaca.kondisi === 'Berawan' ? 'text-bg-secondary' : 'text-bg-warning'))">
+                                        <t t-esc="cuaca.kondisi"/>
+                                    </span>
+                                </div>
+                                <div class="gjs-weather-detail">
+                                    <span><i class="fa fa-thermometer-half"/> <t t-esc="cuaca.suhu"/> °C</span>
+                                    <span><i class="fa fa-tint"/> <t t-esc="cuaca.curah_hujan"/> mm</span>
+                                    <span class="text-muted"><t t-esc="cuaca.tanggal"/></span>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <div class="gjs-grid">
+                    <div class="gjs-card gjs-card-half">
+                        <h4 class="gjs-card-title">Ringkasan Stok Saat Ini</h4>
+                        <table class="table table-sm gjs-table">
+                            <thead>
+                                <tr>
+                                    <th>Bahan Baku</th>
+                                    <th class="text-end">Stok</th>
+                                    <th>Satuan</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="state.data.stock_summary" t-as="stok" t-key="stok.bahan">
+                                    <tr>
+                                        <td><t t-esc="stok.bahan"/></td>
+                                        <td class="text-end"><t t-esc="formatNumber(stok.stok)"/></td>
+                                        <td><t t-esc="stok.satuan"/></td>
+                                        <td>
+                                            <span t-att-class="'badge ' + (stok.status === 'Aman' ? 'text-bg-success' : 'text-bg-danger')">
+                                                <t t-esc="stok.status"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="gjs-card gjs-card-half">
+                        <h4 class="gjs-card-title">Status Kesiapan Model</h4>
+                        <div class="gjs-model-status">
+                            <span t-att-class="'badge ' + (state.data.model_status === 'OK' ? 'text-bg-success' : 'text-bg-danger')">
+                                <t t-esc="state.data.model_status"/>
+                            </span>
+                            <p class="gjs-model-note"><t t-esc="state.data.model_note"/></p>
+                            <p class="gjs-model-version">Versi model aktif: <strong><t t-esc="state.data.model_version"/></strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gjs-card">
+                    <h4 class="gjs-card-title">Tabel Rekomendasi Pengadaan</h4>
+                    <table class="table table-sm table-hover gjs-table">
+                        <thead>
+                            <tr>
+                                <th>Periode</th>
+                                <th>Cabang</th>
+                                <th>Bahan Baku</th>
+                                <th class="text-end">Estimasi Kebutuhan</th>
+                                <th class="text-end">Rekomendasi</th>
+                                <th>Satuan</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="state.data.procurement" t-as="row" t-key="row_index">
+                                <tr>
+                                    <td><t t-esc="row.periode"/></td>
+                                    <td><t t-esc="row.cabang"/></td>
+                                    <td><t t-esc="row.bahan"/></td>
+                                    <td class="text-end"><t t-esc="formatNumber(row.estimasi)"/></td>
+                                    <td class="text-end"><t t-esc="formatNumber(row.rekomendasi)"/></td>
+                                    <td><t t-esc="row.satuan"/></td>
+                                    <td>
+                                        <span t-att-class="'badge ' + (row.status_code === 'kurang' ? 'text-bg-danger' : 'text-bg-success')">
+                                            <t t-esc="row.status"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>
